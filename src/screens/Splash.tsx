@@ -12,10 +12,8 @@ const Splash = (props: any) => {
 
   useEffect(() => {
     axios.get('https://api.covid19api.com/summary').then(response => {
-      console.log(response.data);
-
       setLoading(false);
-      navigation.navigate('Home', {data: response.data});
+      navigation.replace('Home', {data: response.data});
     });
   }, []);
 
