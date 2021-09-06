@@ -4,12 +4,6 @@ import Header from '../components/Header';
 import InfoContainer from '../components/InfoContainer';
 import Search from '../components/Search';
 
-export const HomeContext = React.createContext({
-  currentItem: {},
-  setSearchResult: (item: any) => {},
-  shouldShowResult: false,
-});
-
 const Home = (props: any) => {
   const {Global, Countries} = props.route.params.params.data;
   const defaultItem = Countries.find((item: any) =>
@@ -24,19 +18,19 @@ const Home = (props: any) => {
   };
 
   return (
-    <HomeContext.Provider
-      value={{currentItem, setSearchResult, shouldShowResult}}>
-      <View style={styles.fill}>
-        <Header />
-        <Search data={Countries} />
-        <View style={styles.blockContainer}>
-          <InfoContainer title={currentItem.Country} data={currentItem} />
-        </View>
-        <View style={styles.blockContainer}>
-          <InfoContainer title="Thế giới" data={Global} />
-        </View>
+    // <HomeContext.Provider
+    // value={{currentItem, setSearchResult, shouldShowResult}}>
+    <View style={styles.fill}>
+      <Header />
+      <Search data={Countries} />
+      <View style={styles.blockContainer}>
+        <InfoContainer title={currentItem.Country} data={currentItem} />
       </View>
-    </HomeContext.Provider>
+      <View style={styles.blockContainer}>
+        <InfoContainer title="Thế giới" data={Global} />
+      </View>
+    </View>
+    // </HomeContext.Provider>
   );
 };
 const styles = StyleSheet.create({

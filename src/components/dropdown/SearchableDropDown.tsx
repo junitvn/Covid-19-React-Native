@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,31 +11,29 @@ import ItemDropDown from './ItemDropDown';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {THEME} from '../../styles/colors';
-import axios from 'axios';
-import {API_KEY} from '../../utils/configs';
 import {Country} from '../../model/Country';
 
 interface ISearchableDropDown {
   countries: Array<Country>;
   onChangeCountry: (country: Country) => void;
+  currentCountry: Country;
 }
 
 const SearchableDropDown = (props: ISearchableDropDown) => {
-  const {countries, onChangeCountry} = props;
+  const {countries, onChangeCountry, currentCountry} = props;
   const [showCountries, setShowCountries] = useState(false);
   const [query, setQuery] = useState('');
   const [data, setData] = useState<Array<Country>>([]);
   const [noResult, setNoResult] = useState(false);
-  const [textHolder, setTextHolder] = useState('Viet Nam');
 
   useEffect(() => {
     setNoResult(false);
-    if (query.length > 0) {
+    if (query.length > 0 && currentCountry?.Country !== query) {
       const filtered = countries.filter((item: Country) =>
         item.Country.includes(query),
       );
-      setNoResult(filtered.length === 0);
       setShowCountries(data.length !== 0);
+      setNoResult(filtered.length === 0);
       setData(filtered);
     }
   }, [query]);
@@ -58,7 +56,6 @@ const SearchableDropDown = (props: ISearchableDropDown) => {
   return (
     <View style={styles.searchContainer}>
       <TextInput
-        placeholder={textHolder}
         style={[
           styles.searchInput,
           {color: noResult ? THEME.error : THEME.text},
@@ -89,8 +86,8 @@ const SearchableDropDown = (props: ISearchableDropDown) => {
               index={index}
               onChangeCountry={() => {
                 onChangeCountry(item);
+                setQuery(item.Country);
                 setShowCountries(false);
-                setTextHolder(item.Country);
               }}
             />
           )}

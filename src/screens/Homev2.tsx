@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,8 +15,6 @@ const Homev2 = (props: any) => {
   const defaultCountry = Countries.find((country: Country) =>
     country.Country.includes('Vie'),
   );
-  console.log(defaultCountry);
-
   const [currentCountry, setCurrentCountry] = useState<Country>(defaultCountry);
 
   const onChangeCountry = (country: Country) => {
@@ -43,12 +42,17 @@ const Homev2 = (props: any) => {
       <View style={styles.container}>
         <SearchableDropDown
           countries={Countries}
+          currentCountry={currentCountry}
           onChangeCountry={onChangeCountry}
         />
         <View style={styles.caseContainer}>
-          <Text style={styles.title}>Case update</Text>
+          <Text style={styles.title}>
+            Case update in {currentCountry.Country}
+          </Text>
           <View style={styles.textRow}>
-            <Text style={styles.subtitle}>Newest update September 07</Text>
+            <Text style={styles.subtitle}>{`Newest update ${moment(
+              currentCountry.Date,
+            ).format('MMMM DD, HH:mm')}`}</Text>
             <Text style={styles.textSeeMore}>See detail</Text>
           </View>
           <CasesInfomation data={currentCountry} />
